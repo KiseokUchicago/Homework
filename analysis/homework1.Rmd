@@ -1,0 +1,79 @@
+---
+title: "Homework1"
+author: "KiseokUchicago"
+date: "2020-10-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+(2) Markov Matrice problem: This is a computational exercise, meant to be completed using Matlab, Octave, R, or Julia, related to methods for solving linear systems by iterative techniques (that is, constructing a sequence of approximate vectors which \converges" to the desired solution).
+
+### (2)-(a)
+
+```{r}
+u0 = c(1,0)
+A = matrix( c(.2,.8,.7,.3), nrow=2, ncol=2)
+A
+u1 = A%*%u0
+u2 = A%*%u1
+u3 = A%*%u2
+u4 = A%*%u3
+```
+The common property of u1, u2, u3, u4 is that the entries are summed to 1.
+
+### (2)-(b)
+```{r}
+library(ggplot2)
+library(cowplot)
+library(ggrepel)
+library(plotly)
+library(htmlwidgets)
+
+```
+
+
+```{r}
+u5 = A%*%u4
+u6 = A%*%u5
+u7 = A%*%u6
+
+df_u <- t(cbind(u0, u1, u2, u3, u4, u5, u6, u7))
+colnames(df_u) <- c('x','y')
+df_u <- data.frame(df_u)
+rownames(df_u) <- c('u0', 'u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7')
+df_u$label <- c('0', '1', '2', '3', '4', '5', '6', '7')
+df_u
+
+p1 <- ggplot(df_u,aes_string(x = "x",y = "y")) + geom_point(color='maroon') + theme_cowplot() + geom_text_repel(aes(label=label))
+p1
+
+```
+
+### (2)-(c)
+
+```{r}
+u=c(1,0)
+for (i in 1:1000000){
+  u <- A %*% u
+}
+
+u_star <- u
+
+u_star - A %*% u_star
+
+```
+
+
+
+
+
+
+
