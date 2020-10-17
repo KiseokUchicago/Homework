@@ -11,3 +11,4 @@ editor_options:
 Welcome to my research website.
 
 * [Homework1](homework1.html)
+* [Homework2](homework2.html)

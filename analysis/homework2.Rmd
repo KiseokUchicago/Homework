@@ -1,0 +1,144 @@
+---
+title: "homework2"
+author: "KiseokUchicago"
+date: "2020-10-17"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Homework2
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+### (2)
+The built-in Matlab command to construct the LU-factorization of a given matrix A is
+[L,U]=lu(A) (the built-in command in Octave is the same, in R it is contained in the Ma-
+trix library (loaded with library(Matrix)) and obtained by writing expand(lu(A)). Use this
+command to find the factorization A = LU.
+
+### (2)-(a)
+
+```{r}
+library(Matrix)
+
+A = matrix( c(2,-1,0,-1,2, -1, 0, -1, 2), nrow=3, ncol=3)
+A
+
+LU_A <- expand(lu(A))
+LU_A
+
+# L is
+LU_A$L
+
+# U is
+LU_A$U
+LU_A$L %*% LU_A$U # equals A
+
+```
+
+### (2)-(b)
+Find the Matlab or R (or Octave or Julia) built-in command to solve the systems of the form
+Ax = b
+
+solve() function works to solve the Ax=b
+
+```{r}
+A = matrix( c(2,-1,0,-1,2, -1, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+solve(A,b)
+
+```
+
+### (2)-(c)
+Write a program implementing Gaussian elimination, including row swaps.
+
+```{r}
+# We will write a program that works for 3 by 3 matrix
+
+A = matrix( c(2,-1,0,-1,2, -1, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+
+# make augmented matrix
+m <- cbind(A,b)
+
+# recursive function for row exchange and elimination
+recursive_f <- function(m,col_n){
+  i <- col_n # col_n means column number
+  j <- 1
+  a = c(1:dim(m)[1])
+  while(m[i,i]==0){ # if (i,i) is zero, exchange rows with next row until there is non-zero pivot
+    m[c(i,i+a[j]), ]  <- m[c(i+a[j],i), ]
+    print(paste0('row exchange ',i, 'with ',i+a[j] ))
+    print(m)
+    j <- j+1
+    if(m[i,i]!=0 | j == dim(m)[1]){ # break out of loop if we have non-zero pivot, or there is all rows have 0 in the column i.
+      break
+    }  
+  } 
+  # subtract the rows below the pivot to and make it zero
+  for (k in (i+1):(dim(m)[1])){
+    # print(k)}
+    print (paste0('subtract row',k,' with row',i))
+    m[k,] <- m[k,] - (m[k,i]/m[i,i])*m[i,]
+    print(m)
+  }
+  return(m)
+}
+
+# recursive function for backward substitution (Diagonalizing U for convenience)
+backsub_recursive <- function(m,col_n){
+  g <- col_n
+  if (m[g,g]==0){
+    print(paste0('no or many solution for x',g))
+    return(m)
+  } else{
+    for (h in g:2){
+      # print(g)}
+      print (paste0('subtract row',h-1,' with row',g))
+      m[h-1,] <- m[h-1,] - (m[h-1,g]/m[g,g])*m[g,]
+      print(m)
+      return(m)
+    }
+  } 
+}
+
+# solve the equation Ax=b
+A = matrix( c(2,-1,0,-1,2, -1, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+
+# make augmented matrix
+m <- cbind(A,b)
+
+for (l in 1:(dim(m)[1]-1)){
+  # print(l)}
+  m <- recursive_f(m,l)
+  print(paste0('done with pivot',l))
+}
+
+# this is Upper triangular matrix
+U <- m
+U
+
+# back substitution
+# We will make U diagonal for back substitution
+for (g in dim(m)[1]:2){
+  U <- backsub_recursive(U,g)
+}
+
+# get the solution x vector
+x =c()
+for (i in 1:dim(U)[1]){
+  x[i]=U[i,dim(U)[2]] / U[i,i]
+}
+
+x   # by using round off values of pi, we did not get 0 in x2
+round(x,10) 
+
+```
+
+
+
+
+
