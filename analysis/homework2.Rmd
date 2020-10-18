@@ -7,6 +7,11 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
 ## Homework2
 ## Written assignment for Stat 30750
 Professor: **Fatma Terzioglu**  
@@ -66,16 +71,22 @@ m <- cbind(A,b)
 # recursive function for row exchange and elimination
 recursive_f <- function(m,col_n){
   i <- col_n # col_n means column number
-  j <- 1
+  j <- i+1
   a = c(1:dim(m)[1])
   while(m[i,i]==0){ # if (i,i) is zero, exchange rows with next row until there is non-zero pivot
-    m[c(i,i+a[j]), ]  <- m[c(i+a[j],i), ]
-    print(paste0('row exchange ',i, 'with ',i+a[j] ))
+    print(paste0('this is j: ',j))
+    m[c(i,j), ]  <- m[c(j,i), ]
+    print(paste0('row exchange ',i, ' with ',j ))
     print(m)
     j <- j+1
-    if(m[i,i]!=0 | j == dim(m)[1]){ # break out of loop if we have non-zero pivot, or there is all rows have 0 in the column i.
+    if(m[i,i]!=0){ # break out of loop if we have non-zero pivot
       break
-    }  
+    }
+    if(j > dim(m)[1]){ # break out of loop if there is no pivot for column i. This is singular matrix
+      print('This matrix is Singular. End of function.')
+      stop()
+    }
+    
   } 
   # subtract the rows below the pivot to and make it zero
   for (k in (i+1):(dim(m)[1])){
@@ -139,6 +150,204 @@ round(x,10)
 ```
 
 
+Complete function 
+```{r}
+
+solve_Axb <- function(A,b){
+  m <- cbind(A,b)
+  for (l in 1:(dim(m)[1]-1)){
+  # print(l)}
+  m <- recursive_f(m,l)
+  print(paste0('done with pivot',l))
+  }
+  # this is Upper triangular matrix
+  print('Below is Upper triangular matrix of the LU factorization')
+  U <- m
+  print(U)
+  # back substitution
+  # We will make U diagonal for back substitution
+  print('Below is diagonalizing the U matrix')
+  for (g in dim(m)[1]:2){
+    U <- backsub_recursive(U,g)
+  }
+  
+  # get the solution x vector
+  x =c()
+  for (i in 1:dim(U)[1]){
+    x[i]=U[i,dim(U)[2]] / U[i,i]
+  }
+  print('the solution for x is')
+  print(x)
+}
+
+solve_Axb(A,b)
+
+
+# What happens if the matrix is singular? Error
+A1 = matrix( c(0,0,0,1,0, 0, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+
+solve_Axb(A1,b)
+
+# What happens if the matrix is singular? Error
+A1 = matrix( c(1,0,0,1,0, 0, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+
+solve_Axb(A1,b)
+
+```
+
+
+
+### (3)
+In this exercise, adapted from exercise 1.1.9 inWatkins, we explore ways to keep track of computation times in Matlab or R. This will be useful later in our class, as we explore the efficiency of the numerical linear algebra algorithms we work with. Consider the following code (in Matlab) comparing computation times involved in finding the matrix-vector product b = Ax for various matrix sizes n.
+
+```{r}
+# library for measuring time
+# devtools::install_github("jabiru/tictoc")
+library(tictoc)
+# install.packages('varbvs')
+library(varbvs)
+
+n = 200
+for (j in 1:4){
+  if (j>0){
+    A = randn(n,n)
+    x = randn(n,1)
+    tic()
+    b=A %*% x
+    toc()
+  }
+  n = n*2
+}
+```
+
+### (3)-(a)
+Modify the code so that the code will compute b = A*x 100 times (i.e., 100 iterations, with the same A and x).
+
+```{r}
+tic.clearlog()
+n = 200
+for (j in 1:4){
+  if (j>0){
+    A = randn(n,n)
+    x = randn(n,1)
+    tic()
+    for (i in 1:100){
+      b=A %*% x
+    }
+    toc(log=T)
+  }
+  n = n*2
+}
+
+log.lst <- tic.log(format = FALSE)
+tic.clearlog()
+
+timings <- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings
+
+```
+
+### (3)-(b)
+It often happens that the command cputime does not work well for nowadays multicore computers (try it). Search for a better time tracker. Modify the code so that you can keep track of the (relative) computation times reasonably. Comment on the suitability of the time tracking commands you use.
+
+A: I am using R. So, I didn't try cputime. tictoc library is working well.
+
+### (3)-(c)
+Use your code to determine computation times with initial n = 500, 2000, and 8000. Give the results of the three computation time durations (tn) and two ratios (t4n=tn).
+
+```{r}
+
+tic.clearlog()
+for (n in c(500,2000,8000)){
+  A = randn(n,n)
+  x = randn(n,1)
+  tic()
+  for (i in 1:10){
+    b=A %*% x
+  }
+  toc(log=T)
+}
+
+log.lst <- tic.log(format = FALSE)
+tic.clearlog()
+
+timings <- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings
+
+df_time <- data.frame(duration_sec = timings)
+rownames(df_time) <- c('t500','t2000','t8000')
+df_time
+
+# t2000/t500
+df_time[2,1]/df_time[1,1]  # 11
+
+# t8000/t2000
+df_time[3,1]/df_time[2,1]  # 12.6
+
+```
+
+### (3)-(d)
+
+Instead of using the built-in command for computing b = Ax, write your own code to compute each element with appropriate loops (you may find it useful to refer to Exercises 1.1.10 and 1.1.11 in Watkins). Track the three computation time durations and the two ratios for n = 500, 2000, and 8000, as in part (b). Compare and comment.
+
+```{r}
+
+tic.clearlog()
+for (n in c(500,2000,8000)){
+  A = randn(n,n)
+  x = randn(n,1)
+  b= c(rep(0, n))
+  tic()
+  for (p in 1:10){
+    for (i in 1:n){
+      for (j in 1:n){
+        b[i] <- b[i] + (A[i,j] * x[j])
+      }
+    }
+  }
+  toc(log=T)
+}
+
+log.lst <- tic.log(format = FALSE)
+tic.clearlog()
+
+timings <- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings
+
+df_time <- data.frame(duration_sec = timings)
+rownames(df_time) <- c('t500','t2000','t8000')
+df_time
+
+# t2000/t500
+df_time[2,1]/df_time[1,1] # 11 -> increased to 16.34
+
+# t8000/t2000
+df_time[3,1]/df_time[2,1] # 12.6 -> increased to 24.59
+
+
+```
+
+I adjusted the number of times to compute the same operations from 100 to 10, because part (d) didn't seem to end. According to my calculations, it would take about 33 minutes. 
+
+Part (c) Ax=b (Matrix operation)
+      duration_sec
+t500          0.01
+t2000         0.11
+t8000         1.39
+
+ratio t4n/tn is about around 11~12.
+
+Part (d) b[i] <- b[i] + (A[i,j] * x[j]) (Multiplying and adding operation of elements)
+      duration_sec
+t500          0.49
+t2000         8.01
+t8000       196.97
+
+ratio t4n/tn is about 20~21.
+
+Therefore, for n=500 the cpu time(seconds) of part (d) is 50 folds of that of part (c). For n=2000, it's 80 fold. For 8000, it's 140 fold. It could be said that when the matrix gets bigger, matrix operation becomes much more efficient than algebraic calculations with elements, because the t4n/tn ratio is twice as much in part (d) compared to that of part (c).  
 
 
 
