@@ -507,16 +507,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktreee273a399fe5c481977982ed974bae146f9faa7cetargetblanke273a39a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/Homework/tree/e273a399fe5c481977982ed974bae146f9faa7ce" target="_blank">e273a39</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktree6a1cbe6361b8b6d030fb67901c378c07c4c836abtargetblank6a1cbe6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/Homework/tree/6a1cbe6361b8b6d030fb67901c378c07c4c836ab" target="_blank">6a1cbe6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktreee273a399fe5c481977982ed974bae146f9faa7cetargetblanke273a39a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktree6a1cbe6361b8b6d030fb67901c378c07c4c836abtargetblank6a1cbe6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/Homework/tree/e273a399fe5c481977982ed974bae146f9faa7ce" target="_blank">e273a39</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/Homework/tree/6a1cbe6361b8b6d030fb67901c378c07c4c836ab" target="_blank">6a1cbe6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -638,16 +638,22 @@ m &lt;- cbind(A,b)
 # recursive function for row exchange and elimination
 recursive_f &lt;- function(m,col_n){
   i &lt;- col_n # col_n means column number
-  j &lt;- 1
+  j &lt;- i+1
   a = c(1:dim(m)[1])
   while(m[i,i]==0){ # if (i,i) is zero, exchange rows with next row until there is non-zero pivot
-    m[c(i,i+a[j]), ]  &lt;- m[c(i+a[j],i), ]
-    print(paste0(&#39;row exchange &#39;,i, &#39;with &#39;,i+a[j] ))
+    print(paste0(&#39;this is j: &#39;,j))
+    m[c(i,j), ]  &lt;- m[c(j,i), ]
+    print(paste0(&#39;row exchange &#39;,i, &#39; with &#39;,j ))
     print(m)
     j &lt;- j+1
-    if(m[i,i]!=0 | j == dim(m)[1]){ # break out of loop if we have non-zero pivot, or there is all rows have 0 in the column i.
+    if(m[i,i]!=0){ # break out of loop if we have non-zero pivot
       break
-    }  
+    }
+    if(j &gt; dim(m)[1]){ # break out of loop if there is no pivot for column i. This is singular matrix
+      print(&#39;This matrix is Singular. End of function.&#39;)
+      stop()
+    }
+    
   } 
   # subtract the rows below the pivot to and make it zero
   for (k in (i+1):(dim(m)[1])){
@@ -737,6 +743,257 @@ x   # by using round off values of pi, we did not get 0 in x2</code></pre>
 <pre><code>[1]  1.233701e+00  1.480297e-16 -1.233701e+00</code></pre>
 <pre class="r"><code>round(x,10) </code></pre>
 <pre><code>[1]  1.233701  0.000000 -1.233701</code></pre>
+<p>Complete function</p>
+<pre class="r"><code>solve_Axb &lt;- function(A,b){
+  m &lt;- cbind(A,b)
+  for (l in 1:(dim(m)[1]-1)){
+  # print(l)}
+  m &lt;- recursive_f(m,l)
+  print(paste0(&#39;done with pivot&#39;,l))
+  }
+  # this is Upper triangular matrix
+  print(&#39;Below is Upper triangular matrix of the LU factorization&#39;)
+  U &lt;- m
+  print(U)
+  # back substitution
+  # We will make U diagonal for back substitution
+  print(&#39;Below is diagonalizing the U matrix&#39;)
+  for (g in dim(m)[1]:2){
+    U &lt;- backsub_recursive(U,g)
+  }
+  
+  # get the solution x vector
+  x =c()
+  for (i in 1:dim(U)[1]){
+    x[i]=U[i,dim(U)[2]] / U[i,i]
+  }
+  print(&#39;the solution for x is&#39;)
+  print(x)
+}
+
+solve_Axb(A,b)</code></pre>
+<pre><code>[1] &quot;subtract row2 with row1&quot;
+                       b
+[1,] 2 -1.0  0  2.467401
+[2,] 0  1.5 -1  1.233701
+[3,] 0 -1.0  2 -2.467401
+[1] &quot;subtract row3 with row1&quot;
+                       b
+[1,] 2 -1.0  0  2.467401
+[2,] 0  1.5 -1  1.233701
+[3,] 0 -1.0  2 -2.467401
+[1] &quot;done with pivot1&quot;
+[1] &quot;subtract row3 with row2&quot;
+                              b
+[1,] 2 -1.0  0.000000  2.467401
+[2,] 0  1.5 -1.000000  1.233701
+[3,] 0  0.0  1.333333 -1.644934
+[1] &quot;done with pivot2&quot;
+[1] &quot;Below is Upper triangular matrix of the LU factorization&quot;
+                              b
+[1,] 2 -1.0  0.000000  2.467401
+[2,] 0  1.5 -1.000000  1.233701
+[3,] 0  0.0  1.333333 -1.644934
+[1] &quot;Below is diagonalizing the U matrix&quot;
+[1] &quot;subtract row2 with row3&quot;
+                                 b
+[1,] 2 -1.0 0.000000  2.467401e+00
+[2,] 0  1.5 0.000000  2.220446e-16
+[3,] 0  0.0 1.333333 -1.644934e+00
+[1] &quot;subtract row1 with row2&quot;
+                                b
+[1,] 2 0.0 0.000000  2.467401e+00
+[2,] 0 1.5 0.000000  2.220446e-16
+[3,] 0 0.0 1.333333 -1.644934e+00
+[1] &quot;the solution for x is&quot;
+[1]  1.233701e+00  1.480297e-16 -1.233701e+00</code></pre>
+<pre class="r"><code># What happens if the matrix is singular? Error
+A1 = matrix( c(0,0,0,1,0, 0, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+
+solve_Axb(A1,b)</code></pre>
+<pre><code>[1] &quot;this is j: 2&quot;
+[1] &quot;row exchange 1 with 2&quot;
+                    b
+[1,] 0 0 -1  0.000000
+[2,] 0 1  0  2.467401
+[3,] 0 0  2 -2.467401
+[1] &quot;this is j: 3&quot;
+[1] &quot;row exchange 1 with 3&quot;
+                    b
+[1,] 0 0  2 -2.467401
+[2,] 0 1  0  2.467401
+[3,] 0 0 -1  0.000000
+[1] &quot;This matrix is Singular. End of function.&quot;</code></pre>
+<pre><code>Error in recursive_f(m, l): </code></pre>
+<pre class="r"><code># What happens if the matrix is singular? Error
+A1 = matrix( c(1,0,0,1,0, 0, 0, -1, 2), nrow=3, ncol=3)
+b = c((pi^2)/4,0,-((pi^2)/4))
+
+solve_Axb(A1,b)</code></pre>
+<pre><code>[1] &quot;subtract row2 with row1&quot;
+                    b
+[1,] 1 1  0  2.467401
+[2,] 0 0 -1  0.000000
+[3,] 0 0  2 -2.467401
+[1] &quot;subtract row3 with row1&quot;
+                    b
+[1,] 1 1  0  2.467401
+[2,] 0 0 -1  0.000000
+[3,] 0 0  2 -2.467401
+[1] &quot;done with pivot1&quot;
+[1] &quot;this is j: 3&quot;
+[1] &quot;row exchange 2 with 3&quot;
+                    b
+[1,] 1 1  0  2.467401
+[2,] 0 0  2 -2.467401
+[3,] 0 0 -1  0.000000
+[1] &quot;This matrix is Singular. End of function.&quot;</code></pre>
+<pre><code>Error in recursive_f(m, l): </code></pre>
+</div>
+<div id="section-1" class="section level3">
+<h3>(3)</h3>
+<p>In this exercise, adapted from exercise 1.1.9 inWatkins, we explore ways to keep track of computation times in Matlab or R. This will be useful later in our class, as we explore the efficiency of the numerical linear algebra algorithms we work with. Consider the following code (in Matlab) comparing computation times involved in finding the matrix-vector product b = Ax for various matrix sizes n.</p>
+<pre class="r"><code># library for measuring time
+# devtools::install_github(&quot;jabiru/tictoc&quot;)
+library(tictoc)
+# install.packages(&#39;varbvs&#39;)
+library(varbvs)
+
+n = 200
+for (j in 1:4){
+  if (j&gt;0){
+    A = randn(n,n)
+    x = randn(n,1)
+    tic()
+    b=A %*% x
+    toc()
+  }
+  n = n*2
+}</code></pre>
+<pre><code>0 sec elapsed
+0 sec elapsed
+0 sec elapsed
+0 sec elapsed</code></pre>
+</div>
+<div id="a-1" class="section level3">
+<h3>(3)-(a)</h3>
+<p>Modify the code so that the code will compute b = A*x 100 times (i.e., 100 iterations, with the same A and x).</p>
+<pre class="r"><code>tic.clearlog()
+n = 200
+for (j in 1:4){
+  if (j&gt;0){
+    A = randn(n,n)
+    x = randn(n,1)
+    tic()
+    for (i in 1:100){
+      b=A %*% x
+    }
+    toc(log=T)
+  }
+  n = n*2
+}</code></pre>
+<pre><code>0 sec elapsed
+0.03 sec elapsed
+0.3 sec elapsed
+0.64 sec elapsed</code></pre>
+<pre class="r"><code>log.lst &lt;- tic.log(format = FALSE)
+tic.clearlog()
+
+timings &lt;- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings</code></pre>
+<pre><code>elapsed elapsed elapsed elapsed 
+   0.00    0.03    0.30    0.64 </code></pre>
+</div>
+<div id="b-1" class="section level3">
+<h3>(3)-(b)</h3>
+<p>It often happens that the command cputime does not work well for nowadays multicore computers (try it). Search for a better time tracker. Modify the code so that you can keep track of the (relative) computation times reasonably. Comment on the suitability of the time tracking commands you use.</p>
+<p>A: I am using R. So, I didn’t try cputime. tictoc library is working well.</p>
+</div>
+<div id="c-1" class="section level3">
+<h3>(3)-(c)</h3>
+<p>Use your code to determine computation times with initial n = 500, 2000, and 8000. Give the results of the three computation time durations (tn) and two ratios (t4n=tn).</p>
+<pre class="r"><code>tic.clearlog()
+for (n in c(500,2000,8000)){
+  A = randn(n,n)
+  x = randn(n,1)
+  tic()
+  for (i in 1:10){
+    b=A %*% x
+  }
+  toc(log=T)
+}</code></pre>
+<pre><code>0 sec elapsed
+0.14 sec elapsed
+1.7 sec elapsed</code></pre>
+<pre class="r"><code>log.lst &lt;- tic.log(format = FALSE)
+tic.clearlog()
+
+timings &lt;- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings</code></pre>
+<pre><code>elapsed elapsed elapsed 
+   0.00    0.14    1.70 </code></pre>
+<pre class="r"><code>df_time &lt;- data.frame(duration_sec = timings)
+rownames(df_time) &lt;- c(&#39;t500&#39;,&#39;t2000&#39;,&#39;t8000&#39;)
+df_time</code></pre>
+<pre><code>      duration_sec
+t500          0.00
+t2000         0.14
+t8000         1.70</code></pre>
+<pre class="r"><code># t2000/t500
+df_time[2,1]/df_time[1,1]  # 11</code></pre>
+<pre><code>[1] Inf</code></pre>
+<pre class="r"><code># t8000/t2000
+df_time[3,1]/df_time[2,1]  # 12.6</code></pre>
+<pre><code>[1] 12.14286</code></pre>
+</div>
+<div id="d" class="section level3">
+<h3>(3)-(d)</h3>
+<p>Instead of using the built-in command for computing b = Ax, write your own code to compute each element with appropriate loops (you may find it useful to refer to Exercises 1.1.10 and 1.1.11 in Watkins). Track the three computation time durations and the two ratios for n = 500, 2000, and 8000, as in part (b). Compare and comment.</p>
+<pre class="r"><code>tic.clearlog()
+for (n in c(500,2000,8000)){
+  A = randn(n,n)
+  x = randn(n,1)
+  b= c(rep(0, n))
+  tic()
+  for (p in 1:10){
+    for (i in 1:n){
+      for (j in 1:n){
+        b[i] &lt;- b[i] + (A[i,j] * x[j])
+      }
+    }
+  }
+  toc(log=T)
+}</code></pre>
+<pre><code>0.5 sec elapsed
+8.86 sec elapsed
+193.65 sec elapsed</code></pre>
+<pre class="r"><code>log.lst &lt;- tic.log(format = FALSE)
+tic.clearlog()
+
+timings &lt;- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings</code></pre>
+<pre><code>elapsed elapsed elapsed 
+   0.50    8.86  193.65 </code></pre>
+<pre class="r"><code>df_time &lt;- data.frame(duration_sec = timings)
+rownames(df_time) &lt;- c(&#39;t500&#39;,&#39;t2000&#39;,&#39;t8000&#39;)
+df_time</code></pre>
+<pre><code>      duration_sec
+t500          0.50
+t2000         8.86
+t8000       193.65</code></pre>
+<pre class="r"><code># t2000/t500
+df_time[2,1]/df_time[1,1] # 11 -&gt; increased to 16.34</code></pre>
+<pre><code>[1] 17.72</code></pre>
+<pre class="r"><code># t8000/t2000
+df_time[3,1]/df_time[2,1] # 12.6 -&gt; increased to 24.59</code></pre>
+<pre><code>[1] 21.85666</code></pre>
+<p>I adjusted the number of times to compute the same operations from 100 to 10, because part (d) didn’t seem to end. According to my calculations, it would take about 33 minutes.</p>
+<p>Part (c) Ax=b (Matrix operation) duration_sec t500 0.01 t2000 0.11 t8000 1.39</p>
+<p>ratio t4n/tn is about around 11~12.</p>
+<p>Part (d) b[i] &lt;- b[i] + (A[i,j] * x[j]) (Multiplying and adding operation of elements) duration_sec t500 0.49 t2000 8.01 t8000 196.97</p>
+<p>ratio t4n/tn is about 20~21.</p>
+<p>Therefore, for n=500 the cpu time(seconds) of part (d) is 50 folds of that of part (c). For n=2000, it’s 80 fold. For 8000, it’s 140 fold. It could be said that when the matrix gets bigger, matrix operation becomes much more efficient than algebraic calculations with elements, because the t4n/tn ratio is twice as much in part (d) compared to that of part (c).</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -760,18 +1017,22 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] Matrix_1.2-18   workflowr_1.6.2
+[1] varbvs_2.5-16   tictoc_1.0.1    Matrix_1.2-18   workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5      rstudioapi_0.11 knitr_1.30      magrittr_1.5   
- [5] lattice_0.20-41 R6_2.4.1        rlang_0.4.7     stringr_1.4.0  
- [9] tools_4.0.2     grid_4.0.2      xfun_0.16       git2r_0.27.1   
-[13] htmltools_0.5.0 ellipsis_0.3.1  rprojroot_1.3-2 yaml_2.2.1     
-[17] digest_0.6.25   tibble_3.0.3    lifecycle_0.2.0 crayon_1.3.4   
-[21] later_1.1.0.1   vctrs_0.3.2     promises_1.1.1  fs_1.5.0       
-[25] glue_1.4.2      evaluate_0.14   rmarkdown_2.3   stringi_1.5.3  
-[29] compiler_4.0.2  pillar_1.4.6    backports_1.1.7 httpuv_1.5.4   
-[33] pkgconfig_2.0.3</code></pre>
+ [1] Rcpp_1.0.5          pillar_1.4.6        compiler_4.0.2     
+ [4] later_1.1.0.1       RColorBrewer_1.1-2  git2r_0.27.1       
+ [7] tools_4.0.2         digest_0.6.25       evaluate_0.14      
+[10] lifecycle_0.2.0     tibble_3.0.3        lattice_0.20-41    
+[13] pkgconfig_2.0.3     png_0.1-7           rlang_0.4.7        
+[16] rstudioapi_0.11     yaml_2.2.1          xfun_0.16          
+[19] stringr_1.4.0       knitr_1.30          fs_1.5.0           
+[22] vctrs_0.3.2         rprojroot_1.3-2     grid_4.0.2         
+[25] glue_1.4.2          R6_2.4.1            jpeg_0.1-8.1       
+[28] rmarkdown_2.3       latticeExtra_0.6-29 magrittr_1.5       
+[31] backports_1.1.7     promises_1.1.1      ellipsis_0.3.1     
+[34] htmltools_0.5.0     httpuv_1.5.4        nor1mix_1.3-0      
+[37] stringi_1.5.3       crayon_1.3.4       </code></pre>
 </div>
 </div>
 </div>
