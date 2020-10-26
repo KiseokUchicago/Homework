@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="KiseokUchicago" />
+
+<meta name="date" content="2020-10-25" />
+
+<title>Homework3</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Homework</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/KiseokUchicago/Homework">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Homework3</h1>
+<h4 class="author">KiseokUchicago</h4>
+<h4 class="date">2020-10-25</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-10-25
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Homework/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20201010code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20201010)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20201010code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20201010)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktreeb81fdfdf2b488999890a07cf529d9eb1e034d1d8targetblankb81fdfda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/Homework/tree/b81fdfdf2b488999890a07cf529d9eb1e034d1d8" target="_blank">b81fdfd</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktreeb81fdfdf2b488999890a07cf529d9eb1e034d1d8targetblankb81fdfda" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/Homework/tree/b81fdfdf2b488999890a07cf529d9eb1e034d1d8" target="_blank">b81fdfd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Homework1.Rmd.log
+    Untracked:  Homework1.Rmd.tex
+    Untracked:  TinyTeX.zip
+    Untracked:  analysis/Figs/
+    Untracked:  analysis/Trash/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="homework3" class="section level2">
+<h2>Homework3</h2>
+</div>
+<div id="written-assignment-for-stat-30750" class="section level2">
+<h2>Written assignment for Stat 30750</h2>
+<p>Professor: <strong>Fatma Terzioglu</strong><br />
+Student: <strong>Kiseok Lee</strong></p>
+<div id="section" class="section level3">
+<h3>(2)</h3>
+<p>(Numerical stability / the effect of perturbations) A Hilbert matrix is a square matrix with (i; j) entry = (i + j - 1)^-1. Let H be the n x n Hilbert matrix. Perturb H slightly by adding 10􀀀5 to the (n; 1) entry of H (you may need to set your software to use higher precision arithmetic to see the perturbation). Call the perturbed matrix A. Let b be a vector in Rn with entries drawn from the uniform distribution on the interval (0; 1). Let x0 and x be the solutions of Hx0 = b and Ax = b.</p>
+</div>
+<div id="a" class="section level3">
+<h3>(2)-(a)</h3>
+<p>Create H, A and b for n = 4; 8; 12; 16; 20. Compute the solutions x0 and x. Fill in the table as shown below by computing the error |x-x0| and the relative error |x-x0|/|x0| for each matrix size n.</p>
+<pre class="r"><code># create dataframe to store error information
+df_error &lt;- data.frame(Error =double(), Relative_error=double())
+df_error</code></pre>
+<pre><code>[1] Error          Relative_error
+&lt;0 행&gt; &lt;또는 row.names의 길이가 0입니다&gt;</code></pre>
+<pre class="r"><code># define a function to calculate Euclidean norm
+euc_norm &lt;- function(x) sqrt(sum(x^2))
+
+# library for expressing values with fractions
+library(fractional)
+library(dplyr)
+
+for (n in c(4,8,12,16,20)){
+  print(n)
+  H &lt;- matrix(nrow=n, ncol=n) %&gt;% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A &lt;- H
+  A[n,1] &lt;- A[n,1] - 10^(-5) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 &lt;- solve(H,b, tol = NULL)
+  x &lt;- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  print(euc_norm(x-x0))
+  print(euc_norm(x-x0) / euc_norm(x0))
+  # add to the error dataframe
+  r1 &lt;- euc_norm(x-x0)
+  r2 &lt;- euc_norm(x-x0) / euc_norm(x0)
+  df_error &lt;- rbind(df_error, c(r1, r2))
+}</code></pre>
+<pre><code>[1] 4
+[1] 6.395121
+[1] 0.001463166
+[1] 8
+[1] 2101865654
+[1] 0.3797335
+[1] 12
+[1] 2.516458e+15
+[1] 1.090847
+[1] 16
+[1] 7.535455e+16
+[1] 0.4678618
+[1] 20
+[1] 1.96043e+18
+[1] 9.785949</code></pre>
+<pre class="r"><code>colnames(df_error) &lt;- c(&#39;Error&#39;,&#39;Relative_error&#39;)
+rownames(df_error) &lt;- c(4, 8, 12, 16, 20)
+df_error &lt;- tibble::rownames_to_column(df_error, &#39;n&#39;)
+df_error</code></pre>
+<pre><code>   n        Error Relative_error
+1  4 6.395121e+00    0.001463166
+2  8 2.101866e+09    0.379733546
+3 12 2.516458e+15    1.090846746
+4 16 7.535455e+16    0.467861811
+5 20 1.960430e+18    9.785949314</code></pre>
+</div>
+<div id="b" class="section level3">
+<h3>(2)-(b)</h3>
+<p>Make two plots with matrix size n on the horizontal axis, one with log(|x - x0|) on the vertical axis, and one with log(|x - x0|/|x0|) on the vertical axis.</p>
+<pre class="r"><code>library(ggplot2)
+library(cowplot)
+
+df_error$log_error &lt;- log(df_error$Error)
+df_error$log_rel_error &lt;- log(df_error$Relative_error)
+df_error</code></pre>
+<pre><code>   n        Error Relative_error log_error log_rel_error
+1  4 6.395121e+00    0.001463166  1.855535   -6.52715299
+2  8 2.101866e+09    0.379733546 21.466091   -0.96828547
+3 12 2.516458e+15    1.090846746 35.461629    0.08695423
+4 16 7.535455e+16    0.467861811 38.860981   -0.75958230
+5 20 1.960430e+18    9.785949314 42.119696    2.28094761</code></pre>
+<pre class="r"><code># order the n (x axis from 4 to 20)
+df_error$n &lt;- factor(df_error$n, levels = c(4, 8, 12, 16, 20)) 
+
+
+# plot n by log(|x - x0|)
+p1 &lt;- ggplot(df_error,aes_string(x = &quot;n&quot;,y = &quot;log_error&quot;)) + geom_point(color=&#39;maroon&#39;) + theme_cowplot()
+p1</code></pre>
+<img src="figure/homework3.Rmd/b-1.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<pre class="r"><code># plot n by log (|x - x0|/|x0|)
+p2 &lt;- ggplot(df_error,aes_string(x = &quot;n&quot;,y = &quot;log_rel_error&quot;)) + geom_point(color=&#39;maroon&#39;) + theme_cowplot()
+p2</code></pre>
+<img src="figure/homework3.Rmd/b-2.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+</div>
+<div id="c" class="section level3">
+<h3>(2)-(c)</h3>
+<p>What conclusions can you draw from the above results?</p>
+<p>As we cannot generalize with only 5 data points(n=4, 8, 12, 16, 20), we calculated the error with range of n=2 to n=50 below. Also we tested whether the perturbation size could impact the patterns of error trend.</p>
+<p>Pattern 1) Exponential increase in error with bigger matrix.</p>
+<p>We could see from the plots that in both absoluate error and relative error the error increases as n increases. Therefore, we could say that the effect of the perturbation in relatively low in smaller Hilbert matrix. This could be the case because compared to the index (n,1) value, 1/n, perturbation value 10^(-5) gets relatively bigger as n gets bigger. For example, when n = 4, 0.00001 perturbation for 1/4 may not be big. But when n = 20, 0.00001 perturbation becomes relatively bigger for 1/20.</p>
+<p>Pattern 2) Plateauing of the error when n&gt;15.</p>
+<p>When n becomes greater than between 15 to 20, error meets a plateau meaning that they don’t increase beyond a certain value of n. This is shown well below with a estimated regression line. I can’t come up with an explanation for this phenomenon. So, in order to know if this critical point is related to the perturbation value of 10^(-5), I also did regression for perturbation value of 10^(-3) and 10^(-7).</p>
+<p>Pattern 3) Critical point(n) for plateauing error is not influenced by perturbation value</p>
+<p>According to my attempt with perturbation value of 10^(-3) and 10^(-7), they don’t seem to effect the critical point of plateauing in 15 &lt; n &lt; 20. However, as the perturbation value increase, the standard deviation of log(relative error) values increases (compare figure p4 with figure p6). This could imply that when the perturbation is high, the random entries extracted from uniform distribution of b influences the error rate much greater.</p>
+<pre class="r"><code># Let&#39;s calculate from n=2 to n =50
+df_error &lt;- data.frame(Error =double(), Relative_error=double())
+for (n in 2:50){
+  H &lt;- matrix(nrow=n, ncol=n) %&gt;% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A &lt;- H
+  A[n,1] &lt;- A[n,1] - 10^(-5) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 &lt;- solve(H,b, tol = NULL)
+  x &lt;- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  # add to the error dataframe
+  r1 &lt;- euc_norm(x-x0)
+  r2 &lt;- euc_norm(x-x0) / euc_norm(x0)
+  df_error &lt;- rbind(df_error, c(r1, r2))
+}
+colnames(df_error) &lt;- c(&#39;Error&#39;,&#39;Relative_error&#39;)
+rownames(df_error) &lt;- c(2:50)
+df_error &lt;- tibble::rownames_to_column(df_error, &#39;n&#39;)
+df_error$log_error &lt;- log(df_error$Error)
+df_error$log_rel_error &lt;- log(df_error$Relative_error)
+df_error$n &lt;- factor(df_error$n, levels = c(2:50)) 
+df_error</code></pre>
+<pre><code>    n        Error Relative_error log_error log_rel_error
+1   2 1.496638e-04   1.235597e-04 -8.807119  -8.998785850
+2   3 3.663208e-02   3.239110e-04 -3.306831  -8.035041917
+3   4 2.116617e+00   1.569458e-03  0.749819  -6.457025080
+4   5 1.079493e+03   7.324013e-03  6.984247  -4.916596881
+5   6 6.200560e+04   3.817312e-02 11.034980  -3.265623564
+6   7 5.126923e+05   3.268164e-01 13.147431  -1.118356834
+7   8 7.561786e+07   1.261932e+00 18.141203   0.232643812
+8   9 3.353296e+11   2.093253e+00 26.538380   0.738719341
+9  10 1.766987e+11   6.305366e+00 25.897712   1.841400962
+10 11 1.018762e+14   1.226889e+00 32.254779   0.204482076
+11 12 1.706343e+15   1.113029e+00 35.073129   0.107085441
+12 13 2.610590e+16   1.713483e+00 37.800938   0.538528052
+13 14 1.153986e+17   1.218633e+00 39.287168   0.197729666
+14 15 4.928022e+15   1.792993e-01 36.133714  -1.718698589
+15 16 6.241370e+16   4.745847e-01 38.672561  -0.745315261
+16 17 1.518861e+16   2.699166e-01 37.259322  -1.309642215
+17 18 1.432549e+18   2.176486e+00 41.805987   0.777711767
+18 19 3.817147e+17   1.310861e+00 40.483450   0.270684191
+19 20 1.823777e+17   6.229810e-01 39.744856  -0.473239217
+20 21 1.989216e+17   6.561449e-01 39.831687  -0.421373632
+21 22 1.788689e+17   4.795552e-01 39.725430  -0.734896182
+22 23 6.476277e+16   4.117170e-01 38.709507  -0.887419056
+23 24 3.399114e+17   1.171517e+00 40.367461   0.158299192
+24 25 9.034208e+17   7.692761e-01 41.344965  -0.262305288
+25 26 1.179844e+17   3.469789e-01 39.309329  -1.058491269
+26 27 1.955512e+20   1.003518e+00 46.722354   0.003511343
+27 28 2.891803e+17   4.666089e-01 40.205827  -0.762263829
+28 29 4.211784e+17   9.400582e-01 40.581833  -0.061813510
+29 30 1.139693e+18   1.385971e+00 41.577291   0.326401005
+30 31 2.240539e+18   7.749343e+00 42.253248   2.047608052
+31 32 1.078298e+18   8.616770e-01 41.521915  -0.148874764
+32 33 6.586171e+17   1.287008e+00 41.028919   0.252319794
+33 34 7.630712e+17   7.177449e-01 41.176128  -0.331641008
+34 35 5.818212e+18   4.244350e+00 43.207525   1.445588741
+35 36 3.138534e+19   1.369305e+00 44.892873   0.314303348
+36 37 5.608166e+17   4.178327e-01 40.868170  -0.872674259
+37 38 1.764341e+19   1.631486e+00 44.316894   0.489491380
+38 39 1.120649e+20   6.640304e+01 46.165610   4.195742826
+39 40 2.465132e+17   1.895959e-01 40.046192  -1.662860161
+40 41 6.537677e+15   6.529593e-03 36.416358  -5.031410722
+41 42 2.007133e+17   1.044085e-01 39.840654  -2.259443874
+42 43 4.721022e+17   5.045972e-01 40.695972  -0.683994881
+43 44 8.617009e+17   4.989099e-01 41.297685  -0.695329700
+44 45 1.001892e+19   9.182301e-01 43.751007  -0.085307229
+45 46 2.454593e+19   9.767124e-01 44.647078  -0.023563054
+46 47 2.367676e+17   6.586700e-02 40.005856  -2.720117678
+47 48 3.740701e+17   4.206404e-01 40.463220  -0.865976996
+48 49 1.262738e+18   1.234770e+00 41.679814   0.210884415
+49 50 5.344217e+17   5.108658e-01 40.819962  -0.671648424</code></pre>
+<pre class="r"><code># plot n by log(|x - x0|)
+p3 &lt;- ggplot(df_error,aes(x = as.numeric(n),y = log_error)) + geom_point(color=&#39;maroon&#39;) +
+  geom_smooth(method=&#39;loess&#39;, formula= y~x)
+p3</code></pre>
+<img src="figure/homework3.Rmd/c-1.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<pre class="r"><code># plot n by log (|x - x0|/|x0|)
+p4 &lt;- ggplot(df_error,aes(x = as.numeric(n),y = log_rel_error)) + geom_point(color=&#39;maroon&#39;) + theme_cowplot() + geom_smooth(method=&#39;loess&#39;, formula= y~x)
+p4</code></pre>
+<img src="figure/homework3.Rmd/c-2.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<p>Perturb with bigger number</p>
+<pre class="r"><code># Let&#39;s calculate from n=2 to n =50
+df_error &lt;- data.frame(Error =double(), Relative_error=double())
+for (n in 2:50){
+  H &lt;- matrix(nrow=n, ncol=n) %&gt;% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A &lt;- H
+  A[n,1] &lt;- A[n,1] - 10^(-3) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 &lt;- solve(H,b, tol = NULL)
+  x &lt;- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  # add to the error dataframe
+  r1 &lt;- euc_norm(x-x0)
+  r2 &lt;- euc_norm(x-x0) / euc_norm(x0)
+  df_error &lt;- rbind(df_error, c(r1, r2))
+}
+colnames(df_error) &lt;- c(&#39;Error&#39;,&#39;Relative_error&#39;)
+rownames(df_error) &lt;- c(2:50)
+df_error &lt;- tibble::rownames_to_column(df_error, &#39;n&#39;)
+df_error$log_error &lt;- log(df_error$Error)
+df_error$log_rel_error &lt;- log(df_error$Relative_error)
+df_error$n &lt;- factor(df_error$n, levels = c(2:50)) 
+df_error</code></pre>
+<pre><code>    n        Error Relative_error  log_error log_rel_error
+1   2 9.882874e-03    0.002779384 -4.6169519  -5.885525875
+2   3 1.233366e+00    0.047288280  0.2097474  -3.051492800
+3   4 1.463894e+01    0.172059625  2.6836848  -1.759914207
+4   5 1.599274e+05    1.876266233 11.9824752   0.629283756
+5   6 1.886840e+06    0.768180582 14.4504140  -0.263730440
+6   7 1.791055e+08    1.275239823 19.0034858   0.243134257
+7   8 7.224738e+08    0.903764546 20.3981917  -0.101186410
+8   9 7.338971e+10    1.157719006 25.0190496   0.146451696
+9  10 7.944314e+11    1.308758442 27.4008925   0.269078933
+10 11 2.086057e+13    1.166903291 30.6688820   0.154353480
+11 12 6.748369e+13    1.629415361 31.8429070   0.488221276
+12 13 1.354001e+17    1.772112506 39.4470108   0.572172341
+13 14 4.071441e+17    1.295187999 40.5479434   0.258655857
+14 15 5.973622e+15    0.097384898 36.3261298  -2.329084130
+15 16 2.486630e+16    0.245933226 37.7522898  -1.402695219
+16 17 9.606787e+15    0.191253480 36.8012462  -1.654155610
+17 18 1.422940e+18    1.313498426 41.7992570   0.272694132
+18 19 3.058081e+17    1.247779592 40.2617342   0.221365645
+19 20 4.959116e+17    1.866831132 40.7451740   0.624242412
+20 21 3.292751e+17    0.667483001 40.3356699  -0.404241356
+21 22 1.311683e+17    0.375761704 39.4152576  -0.978800102
+22 23 3.610722e+16    0.169392350 38.1252692  -1.775537659
+23 24 7.116103e+16    0.468014546 38.8037218  -0.759255903
+24 25 4.434365e+17    0.678803977 40.6333310  -0.387422886
+25 26 3.081348e+17    0.789125829 40.2693138  -0.236829492
+26 27 6.394755e+19    1.006549392 45.6045948   0.006528038
+27 28 1.922472e+16    0.070033346 37.4949734  -2.658783772
+28 29 1.400624e+18    1.409764921 41.7834492   0.343422968
+29 30 1.558364e+17    0.260532835 39.5875830  -1.345026381
+30 31 4.553211e+18    3.985838667 42.9623643   1.382747746
+31 32 3.682375e+17    0.463777927 40.4475044  -0.768349448
+32 33 5.621916e+18    7.802862967 43.1732042   2.054490713
+33 34 2.271625e+17    0.300362282 39.9644418  -1.202765925
+34 35 2.690438e+18    1.484479874 42.4362357   0.395064458
+35 36 1.553306e+19    1.459161639 44.1895020   0.377862051
+36 37 1.814341e+18    0.588934116 42.0422542  -0.529440959
+37 38 1.169456e+19    1.288271021 43.9056558   0.253301025
+38 39 1.235081e+19    2.569329584 43.9602537   0.943645003
+39 40 2.453886e+16    0.045501967 37.7390345  -3.089999716
+40 41 1.363523e+18    1.263055830 41.7566031   0.233534046
+41 42 1.897757e+19    1.171710957 44.3897893   0.158465037
+42 43 5.046073e+18    1.189195299 43.0651420   0.173276859
+43 44 3.537793e+18    1.024372796 42.7100348   0.024080519
+44 45 1.094977e+19    0.890952751 43.8398504  -0.115463882
+45 46 1.959307e+19    0.969723405 44.4217078  -0.030744398
+46 47 6.768744e+17    0.124908669 41.0562621  -2.080172455
+47 48 6.166349e+18    3.054459416 43.2656387   1.116602626
+48 49 1.214381e+18    1.063028234 41.6407665   0.061121660
+49 50 1.200462e+18    0.602049770 41.6292378  -0.507415163</code></pre>
+<pre class="r"><code># plot n by log(|x - x0|)
+p5 &lt;- ggplot(df_error,aes(x = as.numeric(n),y = log_error)) + geom_point(color=&#39;maroon&#39;) +
+  geom_smooth(method=&#39;loess&#39;, formula= y~x)
+p5</code></pre>
+<img src="figure/homework3.Rmd/unnamed-chunk-1-1.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<pre class="r"><code># plot n by log (|x - x0|/|x0|)
+p6 &lt;- ggplot(df_error,aes(x = as.numeric(n),y = log_rel_error)) + geom_point(color=&#39;maroon&#39;) + theme_cowplot() + geom_smooth(method=&#39;loess&#39;, formula= y~x)
+p6</code></pre>
+<img src="figure/homework3.Rmd/unnamed-chunk-1-2.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<p>Perturb with smaller number</p>
+<pre class="r"><code># Let&#39;s calculate from n=2 to n =50
+df_error &lt;- data.frame(Error =double(), Relative_error=double())
+for (n in 2:50){
+  H &lt;- matrix(nrow=n, ncol=n) %&gt;% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A &lt;- H
+  A[n,1] &lt;- A[n,1] - 10^(-7) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 &lt;- solve(H,b, tol = NULL)
+  x &lt;- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  # add to the error dataframe
+  r1 &lt;- euc_norm(x-x0)
+  r2 &lt;- euc_norm(x-x0) / euc_norm(x0)
+  df_error &lt;- rbind(df_error, c(r1, r2))
+}
+colnames(df_error) &lt;- c(&#39;Error&#39;,&#39;Relative_error&#39;)
+rownames(df_error) &lt;- c(2:50)
+df_error &lt;- tibble::rownames_to_column(df_error, &#39;n&#39;)
+df_error$log_error &lt;- log(df_error$Error)
+df_error$log_rel_error &lt;- log(df_error$Relative_error)
+df_error$n &lt;- factor(df_error$n, levels = c(2:50)) 
+df_error</code></pre>
+<pre><code>    n        Error Relative_error  log_error log_rel_error
+1   2 8.905981e-07   3.992904e-07 -13.931373 -14.733576962
+2   3 4.700058e-04   3.201455e-06  -7.662766 -12.651905292
+3   4 4.545252e-02   1.538819e-05  -3.091087 -11.081910025
+4   5 7.442531e+00   7.202184e-05   2.007211  -9.538541185
+5   6 3.157433e+02   3.758022e-04   5.754930  -7.886447703
+6   7 1.014180e+04   8.658033e-03   9.224421  -4.749267736
+7   8 4.140007e+06   9.318023e-03  15.236208  -4.675804804
+8   9 3.527861e+08   1.704921e-02  19.681372  -4.071651157
+9  10 8.049109e+10   8.571990e-02  25.111412  -2.456670237
+10 11 6.453750e+13   7.368074e-01  31.798267  -0.305428780
+11 12 2.327241e+15   7.194801e-01  35.383460  -0.329226354
+12 13 4.516696e+17   1.002327e+01  40.651727   2.304909687
+13 14 4.067662e+17   8.427513e-01  40.547015  -0.171083375
+14 15 4.354519e+15   4.360715e-01  36.009991  -0.829949058
+15 16 1.076157e+17   5.453720e-01  39.217343  -0.606287126
+16 17 5.912573e+16   5.747477e-01  38.618443  -0.553824190
+17 18 2.813309e+17   2.932307e+00  40.178308   1.075789315
+18 19 3.767322e+17   1.782963e+00  40.470311   0.578276607
+19 20 3.075529e+17   8.840169e-01  40.267424  -0.123279085
+20 21 1.842633e+17   8.321082e-01  39.755142  -0.183792793
+21 22 8.342747e+16   5.674558e-01  38.962754  -0.566592363
+22 23 9.775778e+16   7.454803e-01  39.121269  -0.293726591
+23 24 2.219397e+17   1.081643e+00  39.941182   0.078481387
+24 25 2.856403e+17   5.400220e-01  40.193510  -0.616145430
+25 26 5.152732e+17   5.757583e-01  40.783474  -0.552067248
+26 27 3.173953e+20   1.001616e+00  47.206680   0.001614962
+27 28 6.915355e+17   1.495136e+00  41.077691   0.402216969
+28 29 1.042425e+18   2.830243e+00  41.488082   1.040362420
+29 30 3.000084e+18   2.599499e+00  42.545172   0.955318729
+30 31 9.652514e+18   6.187271e+00  43.713750   1.822494072
+31 32 1.014239e+17   2.405120e-01  39.158085  -1.424985348
+32 33 5.240998e+18   4.853808e+00  43.103044   1.579763548
+33 34 4.696518e+17   5.779577e-01  40.690768  -0.548254540
+34 35 7.397740e+18   7.620925e+00  43.447706   2.030897789
+35 36 3.143026e+19   1.315483e+00  44.894303   0.274203535
+36 37 3.205792e+18   1.651190e+00  42.611491   0.501496484
+37 38 1.221635e+19   2.785882e+00  43.949307   1.024564595
+38 39 4.449106e+19   1.254328e+01  45.241820   2.529184932
+39 40 9.796993e+16   8.605276e-02  39.123437  -2.452794704
+40 41 3.143238e+18   1.307148e+00  42.591785   0.267847721
+41 42 4.358555e+18   1.236414e+00  42.918672   0.212215307
+42 43 1.591048e+18   8.962365e-01  41.910925  -0.109550927
+43 44 6.104836e+18   2.352284e+00  43.255613   0.855386667
+44 45 1.582575e+18   6.712926e-01  41.905585  -0.398550138
+45 46 2.206860e+19   9.798544e-01  44.540688  -0.020351270
+46 47 5.874101e+17   2.788116e-01  40.914500  -1.277218893
+47 48 3.443071e+17   3.917628e-01  40.380310  -0.937098784
+48 49 4.459069e+18   9.694632e-01  42.941472  -0.031012779
+49 50 3.780762e+17   3.874239e-01  40.473872  -0.948235902</code></pre>
+<pre class="r"><code># plot n by log(|x - x0|)
+p7 &lt;- ggplot(df_error,aes(x = as.numeric(n),y = log_error)) + geom_point(color=&#39;maroon&#39;) +
+  geom_smooth(method=&#39;loess&#39;, formula= y~x)
+p7</code></pre>
+<img src="figure/homework3.Rmd/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<pre class="r"><code># plot n by log (|x - x0|/|x0|)
+p8 &lt;- ggplot(df_error,aes(x = as.numeric(n),y = log_rel_error)) + geom_point(color=&#39;maroon&#39;) + theme_cowplot() + geom_smooth(method=&#39;loess&#39;, formula= y~x)
+p8</code></pre>
+<img src="figure/homework3.Rmd/unnamed-chunk-2-2.png" width="576" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=Korean_Korea.949  LC_CTYPE=Korean_Korea.949   
+[3] LC_MONETARY=Korean_Korea.949 LC_NUMERIC=C                
+[5] LC_TIME=Korean_Korea.949    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] cowplot_1.1.0    ggplot2_3.3.2    dplyr_1.0.1      fractional_0.1.3
+[5] workflowr_1.6.2 
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5       pillar_1.4.6     compiler_4.0.2   later_1.1.0.1   
+ [5] git2r_0.27.1     tools_4.0.2      digest_0.6.25    lattice_0.20-41 
+ [9] nlme_3.1-149     evaluate_0.14    lifecycle_0.2.0  tibble_3.0.3    
+[13] gtable_0.3.0     mgcv_1.8-33      pkgconfig_2.0.3  rlang_0.4.7     
+[17] Matrix_1.2-18    rstudioapi_0.11  yaml_2.2.1       xfun_0.16       
+[21] withr_2.3.0      stringr_1.4.0    knitr_1.30       generics_0.0.2  
+[25] fs_1.5.0         vctrs_0.3.2      rprojroot_1.3-2  grid_4.0.2      
+[29] tidyselect_1.1.0 glue_1.4.2       R6_2.4.1         rmarkdown_2.3   
+[33] farver_2.0.3     purrr_0.3.4      magrittr_1.5     splines_4.0.2   
+[37] backports_1.1.7  scales_1.1.1     promises_1.1.1   ellipsis_0.3.1  
+[41] htmltools_0.5.0  colorspace_1.4-1 httpuv_1.5.4     labeling_0.3    
+[45] stringi_1.5.3    munsell_0.5.0    crayon_1.3.4    </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
