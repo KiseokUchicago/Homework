@@ -1,0 +1,268 @@
+---
+title: "Homework3"
+author: "KiseokUchicago"
+date: "2020-10-25"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Homework3
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+### (2)
+(Numerical stability / the effect of perturbations) A Hilbert matrix is a square matrix with (i; j) entry = (i + j - 1)^-1. Let H be the n x n Hilbert matrix. Perturb H slightly by adding 10􀀀5 to the (n; 1) entry of H (you may need to set your software to use higher precision arithmetic to see the perturbation). Call the perturbed matrix A. Let b be a vector in Rn with entries drawn from the uniform distribution on the interval (0; 1). Let x0 and x be the solutions of Hx0 = b and Ax = b.
+
+### (2)-(a)
+Create H, A and b for n = 4; 8; 12; 16; 20. Compute the solutions x0 and x. Fill in the table as shown below by computing the error |x-x0| and the relative error |x-x0|/|x0| for each matrix size n.
+
+```{r 'a'}
+# create dataframe to store error information
+df_error <- data.frame(Error =double(), Relative_error=double())
+df_error
+
+# define a function to calculate Euclidean norm
+euc_norm <- function(x) sqrt(sum(x^2))
+
+# library for expressing values with fractions
+library(fractional)
+library(dplyr)
+
+for (n in c(4,8,12,16,20)){
+  print(n)
+  H <- matrix(nrow=n, ncol=n) %>% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A <- H
+  A[n,1] <- A[n,1] - 10^(-5) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 <- solve(H,b, tol = NULL)
+  x <- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  print(euc_norm(x-x0))
+  print(euc_norm(x-x0) / euc_norm(x0))
+  # add to the error dataframe
+  r1 <- euc_norm(x-x0)
+  r2 <- euc_norm(x-x0) / euc_norm(x0)
+  df_error <- rbind(df_error, c(r1, r2))
+}
+
+colnames(df_error) <- c('Error','Relative_error')
+rownames(df_error) <- c(4, 8, 12, 16, 20)
+df_error <- tibble::rownames_to_column(df_error, 'n')
+df_error
+
+```
+
+### (2)-(b)
+Make two plots with matrix size n on the horizontal axis, one with log(|x - x0|) on the vertical axis, and one with log(|x - x0|/|x0|) on the vertical axis.
+
+```{r 'b'}
+library(ggplot2)
+library(cowplot)
+
+df_error$log_error <- log(df_error$Error)
+df_error$log_rel_error <- log(df_error$Relative_error)
+df_error
+
+# order the n (x axis from 4 to 20)
+df_error$n <- factor(df_error$n, levels = c(4, 8, 12, 16, 20)) 
+
+
+# plot n by log(|x - x0|)
+p1 <- ggplot(df_error,aes_string(x = "n",y = "log_error")) + geom_point(color='maroon') + theme_cowplot()
+p1
+
+# plot n by log (|x - x0|/|x0|)
+p2 <- ggplot(df_error,aes_string(x = "n",y = "log_rel_error")) + geom_point(color='maroon') + theme_cowplot()
+p2
+
+```
+
+
+### (2)-(c)
+What conclusions can you draw from the above results?
+
+As we cannot generalize with only 5 data points(n=4, 8, 12, 16, 20), we calculated the error with range of n=2 to n=50 below. Also we tested whether the perturbation size could impact the patterns of error trend.
+
+Pattern 1) Exponential increase in error with bigger matrix.
+
+We could see from the plots that in both absoluate error and relative error the error increases as n increases. Therefore, we could say that the effect of the perturbation in relatively low in smaller Hilbert matrix. This could be the case because compared to the index (n,1) value, 1/n, perturbation value 10^(-5) gets relatively bigger as n gets bigger. For example, when n = 4, 0.00001 perturbation for 1/4 may not be big. But when n = 20, 0.00001 perturbation becomes relatively bigger for 1/20.
+
+Pattern 2) Plateauing of the error when n>15.
+
+When n becomes greater than between 15 to 20, error meets a plateau meaning that they don't increase beyond a certain value of n. This is shown well below with a estimated regression line. I can't come up with an explanation for this phenomenon. So, in order to know if this critical point is related to the perturbation value of 10^(-5), I also did regression for perturbation value of 10^(-3) and 10^(-7).
+
+Pattern 3) Critical point(n) for plateauing error is not influenced by perturbation value
+
+According to my attempt with perturbation value of 10^(-3) and 10^(-7), they don't seem to effect the critical point of plateauing in 15 < n < 20. However, as the perturbation value increase, the standard deviation of log(relative error) values increases (compare figure p4 with figure p6). This could imply that when the perturbation is high, the random entries extracted from uniform distribution of b influences the error rate much greater.
+
+
+```{r 'c'}
+# Let's calculate from n=2 to n =50
+df_error <- data.frame(Error =double(), Relative_error=double())
+for (n in 2:50){
+  H <- matrix(nrow=n, ncol=n) %>% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A <- H
+  A[n,1] <- A[n,1] - 10^(-5) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 <- solve(H,b, tol = NULL)
+  x <- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  # add to the error dataframe
+  r1 <- euc_norm(x-x0)
+  r2 <- euc_norm(x-x0) / euc_norm(x0)
+  df_error <- rbind(df_error, c(r1, r2))
+}
+colnames(df_error) <- c('Error','Relative_error')
+rownames(df_error) <- c(2:50)
+df_error <- tibble::rownames_to_column(df_error, 'n')
+df_error$log_error <- log(df_error$Error)
+df_error$log_rel_error <- log(df_error$Relative_error)
+df_error$n <- factor(df_error$n, levels = c(2:50)) 
+df_error
+
+# plot n by log(|x - x0|)
+p3 <- ggplot(df_error,aes(x = as.numeric(n),y = log_error)) + geom_point(color='maroon') +
+  geom_smooth(method='loess', formula= y~x)
+p3
+
+# plot n by log (|x - x0|/|x0|)
+p4 <- ggplot(df_error,aes(x = as.numeric(n),y = log_rel_error)) + geom_point(color='maroon') + theme_cowplot() + geom_smooth(method='loess', formula= y~x)
+p4
+
+
+```
+
+Perturb with bigger number
+
+```{r}
+
+# Let's calculate from n=2 to n =50
+df_error <- data.frame(Error =double(), Relative_error=double())
+for (n in 2:50){
+  H <- matrix(nrow=n, ncol=n) %>% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A <- H
+  A[n,1] <- A[n,1] - 10^(-3) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 <- solve(H,b, tol = NULL)
+  x <- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  # add to the error dataframe
+  r1 <- euc_norm(x-x0)
+  r2 <- euc_norm(x-x0) / euc_norm(x0)
+  df_error <- rbind(df_error, c(r1, r2))
+}
+colnames(df_error) <- c('Error','Relative_error')
+rownames(df_error) <- c(2:50)
+df_error <- tibble::rownames_to_column(df_error, 'n')
+df_error$log_error <- log(df_error$Error)
+df_error$log_rel_error <- log(df_error$Relative_error)
+df_error$n <- factor(df_error$n, levels = c(2:50)) 
+df_error
+
+# plot n by log(|x - x0|)
+p5 <- ggplot(df_error,aes(x = as.numeric(n),y = log_error)) + geom_point(color='maroon') +
+  geom_smooth(method='loess', formula= y~x)
+p5
+
+# plot n by log (|x - x0|/|x0|)
+p6 <- ggplot(df_error,aes(x = as.numeric(n),y = log_rel_error)) + geom_point(color='maroon') + theme_cowplot() + geom_smooth(method='loess', formula= y~x)
+p6
+
+
+```
+
+Perturb with smaller number
+
+```{r}
+
+# Let's calculate from n=2 to n =50
+df_error <- data.frame(Error =double(), Relative_error=double())
+for (n in 2:50){
+  H <- matrix(nrow=n, ncol=n) %>% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  H
+  # Set b from uniform distribution
+  b = runif(n, min=0, max=1)
+  # Set perturbed matrix A
+  A <- H
+  A[n,1] <- A[n,1] - 10^(-7) 
+  # Solve x and x0 (Hx0=b, Ax=b)
+  x0 <- solve(H,b, tol = NULL)
+  x <- solve(A,b, tol = NULL)
+  # Calculate error and relative error
+  euc_norm(x-x0)
+  euc_norm(x-x0) / euc_norm(x0)
+  # add to the error dataframe
+  r1 <- euc_norm(x-x0)
+  r2 <- euc_norm(x-x0) / euc_norm(x0)
+  df_error <- rbind(df_error, c(r1, r2))
+}
+colnames(df_error) <- c('Error','Relative_error')
+rownames(df_error) <- c(2:50)
+df_error <- tibble::rownames_to_column(df_error, 'n')
+df_error$log_error <- log(df_error$Error)
+df_error$log_rel_error <- log(df_error$Relative_error)
+df_error$n <- factor(df_error$n, levels = c(2:50)) 
+df_error
+
+# plot n by log(|x - x0|)
+p7 <- ggplot(df_error,aes(x = as.numeric(n),y = log_error)) + geom_point(color='maroon') +
+  geom_smooth(method='loess', formula= y~x)
+p7
+
+# plot n by log (|x - x0|/|x0|)
+p8 <- ggplot(df_error,aes(x = as.numeric(n),y = log_rel_error)) + geom_point(color='maroon') + theme_cowplot() + geom_smooth(method='loess', formula= y~x)
+p8
+
+
+```
+
+
+
+
+
+
