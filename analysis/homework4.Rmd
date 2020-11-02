@@ -160,5 +160,95 @@ p1
 ```
 When you compare the method (a) Ax=b and (b) LUx=b, we can see from the graph that Ax=b method is more than 10,000~100,000 times faster than LU factorization method in all n(100, 200, 300, 400). Therefore, LU decomposition method is practically inefficient compared to the basic method solve() in R. However, there is a possibility that solve() method might be using a more efficient factorization or decomposition method than LU factorization. Also method (b) needs to solve two equations: Lc=b and Ux=c, which could have contributed to longer length of time. K=300 and K=500 does not differ much (less than 10x) in the computational time.
 
+### (3)
+(Condition number/Sensitivity of linear systems) 
+Consider a linear system Ax = b, where A is invertible and b is nonzero. Let delta x and delta b denote errors or perturbations in x and b: A(x+delta x) = b+delta b.
 
+### (3)-(a)
+Derived by hand in the written assingment.
+
+### (3)-(b)
+(i)
+```{r}
+A = matrix( c(10000,9999,9999,9998), nrow=2, ncol=2)
+A
+b <- c(19999, 19997)
+x <- solve(A,b)
+x
+
+print(paste0('Solution x is ',error))
+
+```
+
+(ii)
+```{r}
+b_hat <- c(19998.999, 19997.001)
+x_hat <- solve(A,b_hat)
+x_hat
+
+euc_norm <- function(x) sqrt(sum(x^2))
+error <- euc_norm(x_hat-x)/euc_norm(x)
+error
+
+print(paste0('Relative error is ',error))
+
+```
+
+(iii)
+```{r}
+b_hat2 <- c(19998.99, 19997.01)
+x_hat2 <- solve(A,b_hat2)
+x_hat2
+
+euc_norm <- function(x) sqrt(sum(x^2))
+error <- euc_norm(x_hat2-x)/euc_norm(x)
+error
+
+print(paste0('Relative error is ',error))
+
+```
+
+(iv)
+```{r}
+# install.packages('matlib')
+library(matlib)
+
+# condition number with Euclidean norm
+kappa_euc <- euc_norm(A %*% x) * euc_norm(inv(A) %*% x)
+
+# condition number using Frobenius form
+kappa_fro <- sqrt(sum(A ** 2)) * sqrt(sum(inv(A) ** 2))
+kappa_fro
+
+print(paste0('Kappa value is ',kappa_fro))
+
+```
+
+Kappa value from Frobenius form with matrix A is almost 4x10^8. In part (a), the Kappa value was n (if the matrix is 2x2 matrix, then 2). Therefore, compared to the kappa value of matrix in part (b) is 2x10^8 times bigger than that of diagonal matrix in part (a). The larger the kappa value, the more unstable the linear system. Thus, it could be concluded that diagonal matrix is much more stable than the matrix with huge values in a ij (i != j) indices.
+
+### (3)-(c)
+Refer to the exercise in the HW3 30750 supplement, on Hilbert matrices, which occur naturally in approximations of functions by polynomials. Compute kappa F (A) of the n x n Hilbert matrix for n = 4 and n = 20 (you may use a built-in operation, but if so, try to write your own code to do the computation by hand as well { include your work on this in your submission). Use Matlab, Octave, R, or Julia for the computation. Comment on the sensitivity of the matrices in comparison to each other. (Note: You may use n = 4 and n = 12 if singularity causes no-output for larger n.)
+
+```{r}
+library(fractional)
+
+for (n in c(4,20)){
+  H <- matrix(nrow=n, ncol=n) %>% fractional
+  for (i in 1:dim(H)[1]){
+    for (j in 1:dim(H)[2]){
+      H[i,j]=(i+j-1)^(-1)
+    }
+  }
+  print(H)
+  H_inverse = solve(H, tol = NULL)
+  kappa_fro <- sqrt(sum(H ** 2)) * sqrt(sum(H_inverse ** 2))
+  print(paste0('For Hilbert matrix of ',n,'x',n))
+  print(paste0('kappa F(H)=',kappa_fro))
+}
+
+```
+Sensitivity grows exponentially as the Hilbert matrix have bigger dimensions.
+kappa F(H)=1962058291245698816, when 20x20 matrix
+kappa F(H)=15613.7935596424, when 4x4 matrix
+This is a difference of factor of 1.256682e+14. Therefore, we could conclude that matrix with smaller dimensions is much more stable to perturbations.
 
