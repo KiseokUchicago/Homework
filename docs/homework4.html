@@ -507,16 +507,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktreefb484e94b227436b104a6ea489dad70be1a15edftargetblankfb484e9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/Homework/tree/fb484e94b227436b104a6ea489dad70be1a15edf" target="_blank">fb484e9</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktree4c4ac5bce19718131206fcddfabcb9a66a3883d3targetblank4c4ac5ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/KiseokUchicago/Homework/tree/4c4ac5bce19718131206fcddfabcb9a66a3883d3" target="_blank">4c4ac5b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktreefb484e94b227436b104a6ea489dad70be1a15edftargetblankfb484e9a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomKiseokUchicagoHomeworktree4c4ac5bce19718131206fcddfabcb9a66a3883d3targetblank4c4ac5ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/Homework/tree/fb484e94b227436b104a6ea489dad70be1a15edf" target="_blank">fb484e9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/KiseokUchicago/Homework/tree/4c4ac5bce19718131206fcddfabcb9a66a3883d3" target="_blank">4c4ac5b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -598,17 +598,17 @@ for (n in c(100,200,300,400)){
     }
 }</code></pre>
 <pre><code>[1] 100
-0.2 sec elapsed
-0.31 sec elapsed
+0.17 sec elapsed
+0.32 sec elapsed
 [1] 200
-1.27 sec elapsed
-1.83 sec elapsed
+1.12 sec elapsed
+1.71 sec elapsed
 [1] 300
 3.61 sec elapsed
-5.96 sec elapsed
+5.7 sec elapsed
 [1] 400
-7.67 sec elapsed
-13.33 sec elapsed</code></pre>
+7.62 sec elapsed
+13.11 sec elapsed</code></pre>
 <pre class="r"><code>log.lst &lt;- tic.log(format = FALSE)
 tic.clearlog()
 
@@ -617,14 +617,14 @@ df_time$comp_time &lt;- timings
 colnames(df_time) &lt;- c(&#39;n&#39;,&#39;K&#39;,&#39;comp_time&#39;)
 df_time</code></pre>
 <pre><code>    n   K comp_time
-1 100 300      0.20
-2 100 500      0.31
-3 200 300      1.27
-4 200 500      1.83
+1 100 300      0.17
+2 100 500      0.32
+3 200 300      1.12
+4 200 500      1.71
 5 300 300      3.61
-6 300 500      5.96
-7 400 300      7.67
-8 400 500     13.33</code></pre>
+6 300 500      5.70
+7 400 300      7.62
+8 400 500     13.11</code></pre>
 </div>
 <div id="b" class="section level3">
 <h3>(2)-(b)</h3>
@@ -667,17 +667,17 @@ for (n in c(100,200,300,400)){
     }
 }</code></pre>
 <pre><code>[1] 100
-0.64 sec elapsed
-1 sec elapsed
+0.53 sec elapsed
+0.83 sec elapsed
 [1] 200
-4.14 sec elapsed
-6.61 sec elapsed
+3.98 sec elapsed
+6.66 sec elapsed
 [1] 300
-14.22 sec elapsed
-22.27 sec elapsed
+13.66 sec elapsed
+22.9 sec elapsed
 [1] 400
-31.86 sec elapsed
-53.13 sec elapsed</code></pre>
+32.78 sec elapsed
+60.65 sec elapsed</code></pre>
 <pre class="r"><code>log.lst &lt;- tic.log(format = FALSE)
 tic.clearlog()
 
@@ -686,27 +686,27 @@ df_time2$comp_time &lt;- timings
 colnames(df_time2) &lt;- c(&#39;n&#39;,&#39;K&#39;,&#39;comp_time&#39;)
 df_time2</code></pre>
 <pre><code>    n K comp_time
-1 100 3      0.64
-2 100 5      1.00
-3 200 3      4.14
-4 200 5      6.61
-5 300 3     14.22
-6 300 5     22.27
-7 400 3     31.86
-8 400 5     53.13</code></pre>
+1 100 3      0.53
+2 100 5      0.83
+3 200 3      3.98
+4 200 5      6.66
+5 300 3     13.66
+6 300 5     22.90
+7 400 3     32.78
+8 400 5     60.65</code></pre>
 <pre class="r"><code># estimate K=300, 500 by multiplying by 100 to the time K=3, K=5
 df_time2$K &lt;- df_time2$K * 100
 df_time2$comp_time &lt;- df_time$comp_time * 100
 df_time2</code></pre>
 <pre><code>    n   K comp_time
-1 100 300        20
-2 100 500        31
-3 200 300       127
-4 200 500       183
+1 100 300        17
+2 100 500        32
+3 200 300       112
+4 200 500       171
 5 300 300       361
-6 300 500       596
-7 400 300       767
-8 400 500      1333</code></pre>
+6 300 500       570
+7 400 300       762
+8 400 500      1311</code></pre>
 </div>
 <div id="c" class="section level3">
 <h3>(2)-(c)</h3>
@@ -765,6 +765,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/KiseokUchicago/Homework/blob/fe984638111688ed65002d26eac9742be6a5e8b0/docs/figure/homework4.Rmd/c-1.png" target="_blank">fe98463</a>
+</td>
+<td>
+KiseokUchicago
+</td>
+<td>
+2020-11-01
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/KiseokUchicago/Homework/blob/0ddb7f6f0c7f44a01faf8436f9a08946e58706bf/docs/figure/homework4.Rmd/c-1.png" target="_blank">0ddb7f6</a>
 </td>
 <td>
@@ -802,8 +813,8 @@ A</code></pre>
 x &lt;- solve(A,b)
 x</code></pre>
 <pre><code>[1] 1 1</code></pre>
-<pre class="r"><code>print(paste0(&#39;Solution x is &#39;,error))</code></pre>
-<pre><code>Error in paste0(&quot;Solution x is &quot;, error): 객체 &#39;error&#39;를 찾을 수 없습니다</code></pre>
+<pre class="r"><code>print(paste0(&#39;Solution x is &#39;,x))</code></pre>
+<pre><code>[1] &quot;Solution x is 0.999999981811925&quot; &quot;Solution x is 1.00000001818989&quot; </code></pre>
 <ol start="2" style="list-style-type: lower-roman">
 <li></li>
 </ol>
@@ -916,7 +927,7 @@ for (n in c(4,20)){
 [20,] 1/33  1/34  1/35  1/36  1/37  1/38  1/39 
 [1] &quot;For Hilbert matrix of 20x20&quot;
 [1] &quot;kappa F(H)=1962058291245698816&quot;</code></pre>
-<p>Sensitivity grows exponentially as the Hilbert matrix have bigger dimensions. kappa F(H)=1962058291245698816, when 20x20 matrix kappa F(H)=15613.7935596424, when 4x4 matrix This is a difference of factor of 1.256682e+14. Therefore, we could conclude that matrix with smaller dimensions is much more stable to perturbations.</p>
+<p>Sensitivity grows exponentially as the Hilbert matrix have bigger dimensions. kappa F(H)=1962058291245698816, when 20x20 matrix. kappa F(H)=15613.7935596424, when 4x4 matrix. This is a difference of factor of 1.256682e+14. Therefore, we could conclude that matrix with smaller dimensions is much more stable to perturbations.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
