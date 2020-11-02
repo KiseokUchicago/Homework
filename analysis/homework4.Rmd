@@ -176,7 +176,7 @@ b <- c(19999, 19997)
 x <- solve(A,b)
 x
 
-print(paste0('Solution x is ',error))
+print(paste0('Solution x is ',x))
 
 ```
 
@@ -248,7 +248,7 @@ for (n in c(4,20)){
 
 ```
 Sensitivity grows exponentially as the Hilbert matrix have bigger dimensions.
-kappa F(H)=1962058291245698816, when 20x20 matrix
-kappa F(H)=15613.7935596424, when 4x4 matrix
+kappa F(H)=1962058291245698816, when 20x20 matrix. 
+kappa F(H)=15613.7935596424, when 4x4 matrix. 
 This is a difference of factor of 1.256682e+14. Therefore, we could conclude that matrix with smaller dimensions is much more stable to perturbations.
 
