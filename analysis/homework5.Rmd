@@ -1,0 +1,171 @@
+---
+title: "Homework5"
+author: "KiseokUchicago"
+date: "2020-11-13"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+## Homework5
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+### (2)-(a)
+Give the R, Matlab, Octave, or Julia commands to produce a QR decomposition for the matrices in Questions 4(b) and 4(c) in the joint Stat 24300/30750 portion of this assignment.
+
+```{r '2-a'}
+library(matlib)
+
+# A from question 4.
+A = matrix( c(1, 1, -2, 1, -1, 4), nrow=3, ncol=2)
+b = c(1, 2, 7)
+
+# QR decompostion of A
+qr_A <- qr(A)
+Q <- qr.Q(qr_A)
+Q
+R <- qr.R(qr_A)
+R
+qr.Q(qr_A) %*% qr.R(qr_A) # brings back A. decomposition success.
+
+```
+I think the question have issue referring to the right matrix.
+
+### (2)-(b)
+The question (4)-(a) does not have {q1, q2, q3}. Something has to change in order for the  problem to make sense.
+
+### (3) Watkins Exercise 3.2.8
+Show that Q is orthogonal, then ||Q||2=1, ||Q-1||2=1, and k2(Q)=1
+
+```{r}
+random_A = matrix( runif(9), nrow=3, ncol=3)
+random_QR <- qr(random_A)
+random_Q <- qr.Q(random_QR)
+
+base::norm(random_Q, type='2')
+base::norm(inv(random_Q), type='2')
+
+# kappa_2 is the value multiplying thses two values above.
+kappa_A = base::norm(random_Q, type='2') * base::norm(inv(random_Q), type='2')
+kappa_A
+```
+
+### (4) Watkins Exercise 3.2.12
+QTx = [y, 0]
+
+### (4)-(a) 
+Give the geometric interpretation of this fact.
+
+This satisfies if and only if x * sin(theta) = y * cos(theta).
+Therefore, tan(theta) = x/y. This always holds true.
+Geometrically, QTx = [y, 0] means that QT matrix is an linear transformation where it transforms any coordinate x=(x1, x2) in to (sqrt(xTx), 0), which is a point on the y-axis intersecting the circle x is in.
+
+### (4)-(b) 
+Show that cos(theta)=x1/sqrt(x1^2+x2^2), sin(theta)=x2/sqrt(x1^2+x2^2), then y = ||x||2
+
+y = cos(theta)x1+sin(theta)x2
+When we substitute cos and sin, then we get y = x1^2/sqrt(x1^2+x2^2) + x2^2/sqrt(x1^2+x2^2) = sqrt(x1^2+x2^2) = ||x||2
+
+### (5) Watkins Exercise 3.4.33
+Implementation of Gram-Schmidt 
+
+```{r}
+# classical Gram-Schmidt algorithm
+
+euc_norm <- function(x) sqrt(sum(x^2))
+
+classic_GS <- function(A){
+  r = matrix(nrow=dim(A)[1], ncol=dim(A)[2])
+  for (k in 1:dim(A)[2]){
+    if(euc_norm(A[,k])==0){
+      print('Length of column is 0. End of function.')
+      stop()
+    } # break out of loop if length is 0
+    k_vec=1:k
+    for (i in k_vec[-k]){
+      r[i,k] <- sum(A[,i]*A[,k])
+      A[,k] <- A[,k] - r[i,k]*A[,i]
+    }
+    A[,k] <- A[,k]/(euc_norm(A[,k])) 
+  } 
+  return(A)
+}
+
+# Original matrix
+A = matrix( runif(9, 1, 10), nrow=3, ncol=3)
+A
+
+# Q matrix after Gram-Schmidt 
+classic_GS(A)
+
+# check all column being orthonormal
+CGS_A <- classic_GS(A)
+
+for (k in 1:dim(CGS_A)[2]){
+  print(euc_norm(CGS_A[,k]))
+} # success
+
+# checking if flag is working
+A = matrix( c(0,0,0,1,2,3,4,5,6), nrow=3, ncol=3)
+classic_GS(A)
+
+```
+
+
+```{r}
+# Modified Gram-Schmidt algorithm
+
+modified_GS <- function(A){
+  for (k in 1:dim(A)[2]){
+    if(euc_norm(A[,k])==0){
+      print('Length of column is 0. End of function.')
+      stop()
+    } # break out of loop if length is 0
+    k_vec=1:k
+    for (i in k_vec[-k]){
+      r_ik <- sum(A[,i]*A[,k])
+      A[,k] <- A[,k] - r_ik*A[,i]
+    }
+    A[,k] <- A[,k]/(euc_norm(A[,k])) 
+  } 
+  return(A)
+}
+
+# Original matrix
+A = matrix( runif(9, 1, 10), nrow=3, ncol=3)
+A
+
+# Q matrix after Gram-Schmidt 
+modified_GS(A)
+
+# check all column being orthonormal
+MGS_A <- modified_GS(A)
+
+for (k in 1:dim(CGS_A)[2]){
+  print(euc_norm(CGS_A[,k]))
+} # success
+
+# checking if flag is working
+A = matrix( c(0,0,0,1,2,3,4,5,6), nrow=3, ncol=3)
+modified_GS(A)
+
+```
+
+The results for two algorithms are the same.
+
+```{r}
+A = matrix( runif(9, 1, 10), nrow=3, ncol=3)
+classic_GS(A) - modified_GS(A)
+```
+
+
+
+
+
+
+
