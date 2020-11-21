@@ -1,0 +1,89 @@
+---
+title: "Homework6"
+author: "KiseokUchicago"
+date: "2020-11-20"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+## Homework6
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+### (4)-(a)
+(The "power method" for computing eigenvalues) Suppose that a real n x n matrix A has a set of
+n linearly independent eigenvectors.
+
+```{r}
+library(expm)
+A1 = matrix( c(0.7, 0.1, 0.2,
+               0.3,0.5,0.2,
+               0.2, 0.7, 0.1), nrow=3, ncol=3)
+
+A2 = matrix( c(0.90, 0.05, 0.05,
+               0.10,0.80,0.10,
+               0.01, 0.01, 0.98), nrow=3, ncol=3)
+
+euc_norm <- function(x) sqrt(sum(x^2))
+
+u0= c(1,0,0)
+
+df_uk <- data.frame(k =double(), ukt_length_A1=double(), ukt_length_A2=double())
+
+for (k in c(2, 4, 8, 16, 100000000)){
+  print(k)
+  uk_A1 <- (A1 %^% k)%*%u0
+  uk_A1_div <- (uk_A1)/euc_norm(uk_A1)
+  print( (uk_A1)/euc_norm(uk_A1))
+  
+  uk_A2 <- (A2 %^% k)%*%u0
+  uk_A2_div <- (uk_A2)/euc_norm(uk_A2)
+  print( (uk_A2)/euc_norm(uk_A2))  
+  
+  df_uk <- rbind(df_uk, c(k, round(uk_A1_div,4), round(uk_A2_div,4 )))
+  
+}
+
+colnames(df_uk) <- c('k', 'ukT/||uk||', 'from','uk=A1k*u0',' ukT/||uk||', 'from ','uk=A2k*u0' )
+
+df_uk
+```
+
+### (4)-(b)
+For which matrix do we find faster convergence of uTk =|uk| to the true unit eigenvector? Explain why. (Hint: Think about how you might try to prove (1).)
+
+```{r}
+library(tictoc)
+
+tic.clearlog()
+
+for (k in c(2, 4, 8, 16, 10000000000000000)){
+  tic()
+  uk_A1 <- (A1 %^% k)%*%u0
+  uk_A1_div <- (uk_A1)/euc_norm(uk_A1)
+  toc(log=T)
+}
+
+
+for (k in c(2, 4, 8, 16, 10000000000000000)){
+  tic()
+  uk_A2 <- (A2 %^% k)%*%u0
+  uk_A2_div <- (uk_A2)/euc_norm(uk_A2)
+  toc(log=T)
+}
+
+log.lst <- tic.log(format = FALSE)
+tic.clearlog()
+
+timings <- unlist(lapply(log.lst, function(x) x$toc - x$tic))
+timings
+```
+A1 has faster convergence time to unit eigenvector compared to that of A2. 
+
+
