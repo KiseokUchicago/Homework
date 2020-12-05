@@ -1,0 +1,83 @@
+---
+title: "Homework7"
+author: "KiseokUchicago"
+date: "2020-12-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+## Homework7
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+### (2) Singular value decomposition
+### (2)-(a)
+
+```{r 'a'}
+library(dplyr)
+
+output=matrix(NA, nrow=300, ncol=20)
+
+for (i in 1:300){
+  A <- matrix(nrow=40, ncol=20)
+  for (k in 1:dim(A)[1]){
+      A[k,]=rnorm(dim(A)[2], mean=0, sd=1)
+  }
+  dim(A)
+  (s <- svd(A))
+  dim(s$u)
+  dim(s$v)
+  # D <- diag(s$d)
+  # s$u %*% D %*% t(s$v) #  X = U D V'
+  # t(s$u) %*% X %*% s$v #  D = U' X V 
+  output[i,] <- s$d
+}
+
+dim(output)
+output_sqr <- sqrt(output)
+df_output_sig <- as.data.frame(output_sqr)
+
+head(df_output_sig)
+
+```
+
+### (2)-(b)
+Plot a histogram of the largest singular value from the 300 matrices.
+
+```{r 'b'}
+hist(df_output_sig$V1, breaks=15, col="darkblue", border="slateblue", main="Histogram of largest sv", xlab = 'sigma_1')
+
+```
+
+### (2)-(c)
+Plot a histogram of the smallest singular value from the 300 matrices.
+
+```{r 'c'}
+hist(df_output_sig$V20, breaks=15, col="darkblue", border="slateblue", main="Histogram of smallest sv", xlab = 'sigma_20')
+
+```
+
+### (2)-(d)
+Plot a curve of the mean of the 20 singular values obtained from the 300 matrices,
+using the eigenvalue order(from largest to smallest) as the horizontal axis.
+
+```{r 'd'}
+library(ggplot2)
+table <- sapply(df_output_sig, mean, 1)
+df_mean <- data.frame(mean=table)
+rownames(df_mean) <- 1:20
+df_mean2 <- tibble::rownames_to_column(df_mean, 'sigma')
+
+plot(df_mean2, type ='l', main='Mean of 20 singular values')
+
+```
+
+### (2)-(e)
+Rank of A is equal to number of sigma, 20. Since A=USVt, A is similar to S (A ~ S, S: singular value diagonal matrix). This means that the eigenvalue of two matrices are the same. Therefore, the rank, which is equal to the number of non-zero eigenvalues, of A and S is same.
+
