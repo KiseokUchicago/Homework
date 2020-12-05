@@ -16,3 +16,4 @@ Welcome to my research website.
 * [Homework4](homework4.html)
 * [Homework5](homework5.html)
 * [Homework6](homework6.html)
+* [Homework7](homework7.html)
