@@ -1,0 +1,225 @@
+---
+title: "Final_project"
+author: "KiseokUchicago"
+date: "2020-12-13"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+                      error=TRUE, echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+```
+## Final Project
+## Written assignment for Stat 30750
+Professor: **Fatma Terzioglu**  
+Student: **Kiseok Lee**  
+
+### (1)-(e)
+Jacobi method to iteratively solve Ax=b
+
+```{r 'e'}
+library(matlib)
+
+A = matrix( c(6, 2, 2, 1,
+              2, 5, 1, 1,
+              2, 1, 7, 2,
+              1, 1, 2, 8), nrow=4, ncol=4)
+b = c(10, 18, 14, 21)
+x0= c(0, 0, 0, 0)
+df_e <- matrix(NA, ncol=4)
+
+Jacobi_iteration <- function(A, b, x0){
+  x <- solve(A, b)
+  D <- diag(diag(A))
+  
+  k <- 1
+  x_k <- inv(D) %*% ((D-A) %*% x0 + b)
+  e = x - x_k
+  # e <- round(e, 5)
+  e <- trunc(e*10000)/10000
+  colnames(x_k) <- paste0('x_',k)
+  print(x_k)
+  colnames(e) <- paste0('e_',k)
+  print(e)
+  df_e <- t(e)
+  
+  while (!all(e == rep(0,4))){
+    
+    k <- k+1
+    x_k <- inv(D) %*% ((D-A) %*% x_k + b)
+    e <- x - x_k
+    # e <- round(e, 5)
+    e <- trunc(e*10000)/10000
+    colnames(x_k) <- paste0('x_',k)
+    print(x_k)
+    colnames(e) <- paste0('e_',k)
+    print(e)
+    df_e <- rbind(df_e, t(e))
+  }
+  
+  k <- k+1
+  x_k <- inv(D) %*% ((D-A) %*% x_k + b)
+  e <- x - x_k
+  # e <- round(e, 5)
+  e <- trunc(e*10000)/10000
+  colnames(x_k) <- paste0('x_',k)
+  print(x_k)
+  colnames(e) <- paste0('e_',k)
+  print(e)
+  df_e <- rbind(df_e, t(e))
+  
+  k <- k+1
+  x_k <- inv(D) %*% ((D-A) %*% x_k + b)
+  e <- x - x_k
+  # e <- round(e, 5)
+  e <- trunc(e*10000)/10000
+  colnames(x_k) <- paste0('x_',k)
+  print(x_k)
+  colnames(e) <- paste0('e_',k)
+  print(e)
+  df_e <- rbind(df_e, t(e))
+  return(df_e)
+}
+
+df_e <- Jacobi_iteration(A, b, x0)
+
+```
+
+### (1)-(f)
+Does the error (x-x(k)) approach 0 monotonically?
+
+```{r 'f'}
+euc_norm <- function(x) sqrt(sum(x^2))
+df_e
+
+e_length <- apply(df_e,1,euc_norm)
+e_length <- as.data.frame(e_length)
+
+plot(e_length$e_length, type ='l', main='Size of Error (Jacobi method)', xlab='k',ylab='|e| = |x-x(k)|')
+
+```
+
+x(k) does not approach x monotonously. According to the graph, error starts to decrease rapidly but its rate slows down, asymptotically converging to 0.
+
+### (2)-(b)
+Gauss-Seidel Method
+
+```{r 'Gauss-Seidel'}
+
+A = matrix( c(6, 2, 2, 1,
+              2, 5, 1, 1,
+              2, 1, 7, 2,
+              1, 1, 2, 8), nrow=4, ncol=4)
+b = c(10, 18, 14, 21)
+x0= c(0, 0, 0, 0)
+df_gs <- matrix(NA, ncol=4)
+
+Gauss_seidel_iteration <- function(A, b, x0){
+  x <- solve(A, b)
+  D <- diag(diag(A))
+  
+  L <- -A
+  L[upper.tri(L, diag=T)] <- 0
+  
+  U <- -A
+  U[lower.tri(U, diag=T)] <- 0
+  x_k <- c(0,0,0,0)
+  
+  k <- 1
+  for (i in 1:dim(A)[1]){
+    print(paste0('x_','(k=',k,')_',i))
+    x_k[i] <- (1/A[i,i])*(b[i]+(L[i,] %*% x_k)+(U[i,] %*% x_k))
+    print(x_k)
+  }
+  
+  e = x - x_k
+  e <- trunc(e*10000)/10000
+  ee <- t(e)
+  rownames(ee) <- paste0('e_',k)
+  x_ke <- t(x_k)
+  rownames(x_ke) <- paste0('x_',k)
+  print(x_ke)
+  print(ee)
+  df_gs <- rbind(ee)
+  
+  while (!all(e == rep(0,4))){
+    
+    k <- k+1
+    for (i in 1:dim(A)[1]){
+      print(paste0('x_','(k=',k,')_',i))
+      x_k[i] <- (1/A[i,i])*(b[i]+(L[i,] %*% x_k)+(U[i,] %*% x_k))
+      print(x_k)
+    }
+    e <- x - x_k
+    e <- trunc(e*10000)/10000
+    ee <- t(e)
+    rownames(ee) <- paste0('e_',k)
+    x_ke <- t(x_k)
+    rownames(x_ke) <- paste0('x_',k)
+    print(x_ke)
+    print(ee)
+    df_gs <- rbind(df_gs, ee)
+  }
+  
+  k <- k+1
+  for (i in 1:dim(A)[1]){
+    print(paste0('x_','(k=',k,')_',i))
+    x_k[i] <- (1/A[i,i])*(b[i]+(L[i,] %*% x_k)+(U[i,] %*% x_k))
+    print(x_k)
+  }
+  e <- x - x_k
+  e <- trunc(e*10000)/10000
+  ee <- t(e)
+  rownames(ee) <- paste0('e_',k)
+  x_ke <- t(x_k)
+  rownames(x_ke) <- paste0('x_',k)
+  print(x_ke)
+  print(ee)
+  df_gs <- rbind(df_gs,ee)
+  
+  k <- k+1
+  for (i in 1:dim(A)[1]){
+    print(paste0('x_','(k=',k,')_',i))
+    x_k[i] <- (1/A[i,i])*(b[i]+(L[i,] %*% x_k)+(U[i,] %*% x_k))
+    print(x_k)
+  }
+  e <- x - x_k
+  e <- trunc(e*10000)/10000
+  ee <- t(e)
+  rownames(ee) <- paste0('e_',k)
+  x_ke <- t(x_k)
+  rownames(x_ke) <- paste0('x_',k)
+  print(x_ke)
+  print(ee)
+  df_gs <- rbind(df_gs,ee)
+  return(df_gs)
+}
+
+df_gs <- Gauss_seidel_iteration(A, b, x0)
+
+```
+
+
+```{r}
+df_gs
+
+e_length <- apply(df_gs,1,euc_norm)
+e_length <- as.data.frame(e_length)
+
+plot(e_length$e_length, type ='l', main='Size of Error (Gauss-Seidel)', xlab='k',ylab='|e| = |x-x(k)|')
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
